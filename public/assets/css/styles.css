@@ -1,0 +1,234 @@
+/* Theme */
+:root{
+  --bg:#0b1020;
+  --card:#001b06af;
+  --muted:#7b8aa5;
+  --primary:#1f6feb;
+  --primary-2:#5d9bff;
+  --light:#f8fafc;
+  --border:#000000;
+  --sidebar:#0f1730;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: linear-gradient(240deg, #165f0d96, #417af5); color: #e5e7eb; }
+
+/* Layout with sidebar */
+.has-sidebar { display: flex; }
+.sidebar { width: 260px; min-height: 100vh; background: var(--sidebar); color: #cbd5e1; position: sticky; top: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border); }
+.sidebar-brand { font-weight: 700; padding: 16px 18px; color: #fff; border-bottom: 1px solid var(--border); }
+.sidebar-company { display:flex; align-items:center; gap:10px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+.sidebar-company img { width:36px; height:36px; object-fit:contain; border-radius:6px; background:#fff; }
+.company-name { font-size: 12px; color: #e2e8f0; }
+.sidebar-menu { list-style: none; padding: 12px; margin: 0; flex:1; }
+.sidebar-menu a { display:flex; align-items:center; gap:10px; text-decoration:none; color:#cbd5e1; padding:10px 12px; border-radius:10px; }
+.sidebar-menu a:hover { background: #142045; color:#fff; }
+.menu-title { font-size: 11px; color:#94a3b8; padding: 14px 12px 6px; text-transform: uppercase; letter-spacing: .8px; }
+.sidebar-footer { padding: 12px; border-top: 1px solid var(--border); }
+.sidebar-footer .user { color:#e2e8f0; font-size: 14px; }
+
+.page { flex: 1; display:flex; flex-direction: column; }
+.topbar { height: 56px; display:flex; align-items:center; justify-content:space-between; padding: 0 20px; background: linear-gradient(135deg, rgba(31,111,235,.2), rgba(31,111,235,.05)); border-bottom: 1px solid var(--border); color: #e2e8f0; }
+.topbar-title { display:flex; align-items:center; gap:10px; font-weight:600; }
+.content { padding: 24px; }
+
+/* Cards, tables */
+.card { color:#cbd5e1; border-bottom: 1px solid var(--border); background: #ffffff; }
+.table { color:#1b1b1b; }
+.table-striped>tbody>tr:nth-of-type(odd)>* { background: rgba(255,255,255,.02); color: #e5e7eb; }
+.table thead th { color:#0f0f0f; border-bottom: 1px solid var(--border); background: #ffffff; }
+.table td, .table th { border-color: var(--border) !important; }
+.badge { border-radius: 999px; padding: 6px 10px; }
+
+.table,
+.table thead th,
+.table tbody td,
+.table tfoot th,
+.table tfoot td {
+  color: #000 !important;
+}
+
+/* Mantener negro también en las filas "striped" */
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  color: #000 !important;
+}
+
+/* Buttons */
+.btn-primary { background: linear-gradient(180deg, var(--primary), var(--primary-2)); border: 0; }
+.btn-outline-secondary { color:#cbd5e1; border-color:#334155; }
+.btn-outline-secondary:hover { background:#1e293b; border-color:#475569; color:#fff; }
+.btn-warning { background: #f59e0b; border: 0; }
+.btn-secondary { background: #334155; border: 0; }
+
+/* Login */
+.login-bg { background: radial-gradient(1200px 600px at 20% -10%, rgba(93,155,255,.35), transparent 60%), radial-gradient(900px 600px at 100% 0%, rgba(31,111,235,.25), transparent 50%), #0b1020; }
+.login-card { background:#0f1833; border:1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.login-header { padding: 22px 22px 10px; background: linear-gradient(135deg, rgba(31,111,235,.20), rgba(31,111,235,.05)); border-bottom: 1px solid var(--border); }
+.login-badge { display:inline-block; padding:4px 10px; background:#1f6feb; color:#fff; border-radius:999px; font-size:11px; font-weight:600; }
+.login-body { padding: 20px; }
+.login-footer { padding: 12px 20px; border-top: 1px solid var(--border); color:#94a3b8; font-size:12px; }
+
+
+/* ===========================
+   Vista de detalle dentro del iframe
+=========================== */
+.detail-view {
+  background: #0f1833; /* iguala el fondo del modal */
+  color: #e5e7eb;
+}
+
+/* Cards */
+.detail-view .card {
+  background: #162044;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+}
+
+.detail-view .card-header {
+  background: rgba(255,255,255,0.05);
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.detail-view .card-body p {
+  margin-bottom: .4rem;
+  color: #e5e7eb;
+}
+
+/* Títulos y textos */
+.detail-view h4, 
+.detail-view h5, 
+.detail-view h6 {
+  color: #f3f4f6;
+}
+.detail-view .text-muted { color: #a3b2c7 !important; }
+
+/* Botón secundario */
+.detail-view .btn.btn-secondary {
+  background: #2a375f;
+  border-color: #2a375f;
+  color: #e5e7eb;
+}
+.detail-view .btn.btn-secondary:hover {
+  background: #344278;
+  border-color: #344278;
+}
+
+/* Tabla */
+.detail-view .table { color: #e5e7eb; margin-bottom: 0; }
+.detail-view .table thead { background: rgba(255,255,255,0.06); }
+.detail-view .table thead th { color: #cbd5e1; border-bottom-color: rgba(255,255,255,0.1) !important; }
+.detail-view .table tbody td { border-top-color: rgba(255,255,255,0.06); }
+.detail-view .table-hover tbody tr:hover { background: rgba(255,255,255,0.04); }
+
+/* Scroll tabla */
+.detail-view .table-responsive {
+  scrollbar-width: thin;
+  scrollbar-color: #41507a transparent;
+}
+.detail-view .table-responsive::-webkit-scrollbar { height: 8px; width: 8px; }
+.detail-view .table-responsive::-webkit-scrollbar-thumb { background: #41507a; border-radius: 8px; }
+.detail-view .table-responsive::-webkit-scrollbar-track { background: transparent; }
+
+/* Badges */
+.detail-view .badge.bg-primary { background-color: #3665f3 !important; }
+.detail-view .badge.bg-success { background-color: #16a34a !important; }
+.detail-view .badge.bg-danger  { background-color: #dc2626 !important; }
+.detail-view .badge.bg-warning { background-color: #fbbf24 !important; color: #111827 !important; }
+
+/* Bordes suaves */
+.detail-view .border-bottom { border-color: rgba(255,255,255,0.08) !important; }
+
+/* Responsive fino */
+@media (max-width: 576px) {
+  .detail-view h4 { font-size: 1.05rem; }
+  .detail-view .btn.btn-sm { padding: .25rem .5rem; }
+}
+
+/* === Alinear verticalmente TODO el contenido de la tabla === */
+.table > :not(caption) > * > * {
+  vertical-align: middle !important;   /* Bootstrap trae 'top' por defecto */
+}
+
+/* === Columna de Acciones: sin saltos de línea ni márgenes “fantasma” === */
+/* Si tu <td> tiene class="actions", perfecto; si no, aplicamos al último <td> como fallback */
+.table td.actions,
+.table tbody tr > td:last-child {
+  white-space: nowrap;
+  padding-top: .35rem;     /* iguala padding con resto de celdas */
+  padding-bottom: .35rem;
+}
+
+/* Contenedor de botones (btn-group/div) sin márgenes extras */
+.table td.actions > *,
+.table tbody tr > td:last-child > * {
+  margin: 0 !important;
+}
+
+/* Botones alineados al centro del eje vertical y sin desfasajes */
+.table td.actions .btn,
+.table tbody tr > td:last-child .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 .15rem !important;  /* espacio entre botones */
+}
+
+/* (Opcional) que los icon-buttons sean perfectamente cuadrados y consistentes */
+.table td.actions .btn.btn-sm,
+.table tbody tr > td:last-child .btn.btn-sm {
+  height: 32px;
+  width: 32px;
+  padding: 0;
+  line-height: 1;
+}
+
+/* === Fila pareja y acciones alineadas === */
+
+/* Unifica el borde entre filas (evita el "escalón") */
+.table {
+  border-collapse: collapse !important;   /* en Bootstrap viene "separate" */
+  table-layout: auto;                     /* o "fixed" si prefieres columnas rígidas */
+}
+
+/* Todas las celdas centradas verticalmente y mismo padding */
+.table > :not(caption) > * > * {
+  vertical-align: middle !important;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border) !important; /* un solo borde continuo */
+}
+
+/* Asegura que cada fila se renderice como fila real de tabla */
+.table tbody tr { display: table-row !important; }
+
+/* Columna de acciones: sin saltos, botones alineados */
+.table td.actions,
+.table tbody tr > td:last-child {
+  white-space: nowrap;
+}
+
+/* Botones de acciones uniformes */
+.table td.actions .btn,
+.table tbody tr > td:last-child .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 .15rem;
+  line-height: 1;
+}
+
+.table td.actions .btn.btn-sm,
+.table tbody tr > td:last-child .btn.btn-sm {
+  height: 32px;
+  width: 32px;       /* opcional: cuadrados */
+  padding: 0;
+}
+
+/* Si usas .table-striped, mantenla pero solo para el <tr> completo */
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(0,0,0,.02);   /* antes aplicabas al * de cada celda */
+}
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background: transparent !important;  /* evita parches por-celda que desalinean el borde */
+}
