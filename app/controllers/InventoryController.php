@@ -69,7 +69,7 @@ class InventoryController extends Controller
         ]);
       }
 
-      $this->redirect('/public');
+      $this->redirect('/');
       return;
     }
 
