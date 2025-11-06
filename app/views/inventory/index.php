@@ -430,15 +430,16 @@ echo '<script>window.__APP_BASE__ = ' . json_encode($base) . ';</script>';
 <!-- ===========================
      MODAL: DETALLE (iframe)
 =========================== -->
+
 <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-xl">
-    <div class="modal-content" style="background:#0f1833; color:#e5e7eb;">
+    <div class="modal-content " style="background:#0f1833; color:#e5e7eb;">
       <div class="modal-header">
         <h5 class="modal-title"><i class="bi bi-eye me-2"></i>Detalle de Ítem</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body p-0">
-        <iframe id="detailFrame" src="about:blank" style="width:100%; height:40vh; border:0; background:#0f1833;"></iframe>
+        <iframe id="detailFrame" src="about:blank" style="width:100%; height:40vh; border:0; "></iframe>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

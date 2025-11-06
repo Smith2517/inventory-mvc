@@ -6,7 +6,7 @@ $isPartial = !empty($_GET['partial']); // si viene desde el modal/iframe
 
 <?php if ($isPartial): ?>
   <!-- Cuando se carga dentro del iframe SIN layout, incluimos los estilos aquí -->
-  <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/show.css">
   <!-- Si usas Bootstrap Icons, descomenta: -->
   <!-- <link rel="stylesheet" href="<?= $base ?>/assets/icons/bootstrap-icons.css"> -->
   <!-- Tu CSS principal si aplica -->
@@ -17,15 +17,9 @@ $isPartial = !empty($_GET['partial']); // si viene desde el modal/iframe
 
   <!-- Encabezado -->
   <div class="d-flex align-items-center mb-3 border-bottom pb-2">
-    <h4 class="me-auto mb-0">
+    <h2 class="me-auto mb-0" style="color: white; text-align: center;">
       Detalle: <?= htmlspecialchars($item['codigo']) ?> - <?= htmlspecialchars($item['nombre']) ?>
-    </h4>
-    <button class="btn btn-sm btn-secondary"
-      data-bs-toggle="modal"
-      data-bs-target="#labelModal"
-      data-id="<?= $item['id'] ?>">
-      Etiqueta
-    </button>
+    </h2>
   </div>
 
   <div class="row g-3">

@@ -232,3 +232,4 @@ body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
   background: transparent !important;  /* evita parches por-celda que desalinean el borde */
 }
+
