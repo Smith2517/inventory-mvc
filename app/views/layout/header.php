@@ -36,7 +36,7 @@ $isLogged = !empty($_SESSION['user']);
       </div>
       <ul class="sidebar-menu">
         <li><a href="<?= $base ?>/?controller=inventory&action=index"><i class="bi bi-grid"></i> Inventario</a></li>
-        
+
         <li><a href="<?= $base ?>/?controller=office&action=index"><i class="bi bi-buildings"></i> Oficinas</a></li>
         <li class="menu-title">Reportes</li>
         <li><a target="_blank" href="<?= $base ?>/?controller=report&action=inventory"><i class="bi bi-file-earmark-spreadsheet"></i> Inventario</a></li>
@@ -47,14 +47,28 @@ $isLogged = !empty($_SESSION['user']);
           <i class="bi bi-person-circle me-2"></i>
           <span><?= htmlspecialchars($_SESSION['user']['nombre'] ?? $_SESSION['user']['username']) ?></span>
         </div>
-        <a class="btn btn-sm btn-outline-light mt-2 w-100" href="<?= $base ?>/?controller=auth&action=logout">
-          <i class="bi bi-box-arrow-right me-1"></i> Salir
+        <a class="btn btn-sm btn-danger mt-2 w-100" href="<?= $base ?>/?controller=auth&action=logout">
+          <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
         </a>
       </div>
     </aside>
 
     <div class="page">
-      
+      <header class="topbar">
+        <div class="topbar-title">
+          <button class="sidebar-toggle d-md-none me-3">
+            <i class="bi bi-list"></i>
+          </button>
+          <span>Inventario</span>
+        </div>
+        <div>
+          <span class="user-info d-none d-md-block">
+            <i class="bi bi-person-circle me-1"></i>
+            <?= htmlspecialchars($_SESSION['user']['nombre'] ?? $_SESSION['user']['username']) ?>
+          </span>
+        </div>
+      </header>
+
       <main class="content container-fluid py-4">
       <?php else: ?>
         <main class="login-container container py-5">

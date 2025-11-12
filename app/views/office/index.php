@@ -37,17 +37,20 @@ $csrf = $csrf ?? ($_SESSION['csrf'] ?? '');
             <?php endif; ?>
           </td>
           <td class="d-flex gap-1">
-            <!-- (Opcional) Acciones futuras -->
-            <a class="btn btn-sm btn-outline-primary"
-               href="<?= $base ?>/?controller=office&action=edit&id=<?= $row['id'] ?>"
-               title="Editar">
-              <i class="bi bi-pencil"></i>
-            </a>
-            <a class="btn btn-sm btn-outline-secondary"
-               href="<?= $base ?>/?controller=office&action=show&id=<?= $row['id'] ?>"
+            <button class="btn btn-sm btn-outline-primary"
+               data-bs-toggle="modal"
+               data-bs-target="#showOfficeModal"
+               data-id="<?= $row['id'] ?>"
                title="Detalle">
               <i class="bi bi-eye"></i>
-            </a>
+            </button>
+            <button class="btn btn-sm btn-outline-secondary"
+               data-bs-toggle="modal"
+               data-bs-target="#editOfficeModal"
+               data-id="<?= $row['id'] ?>"
+               title="Editar">
+              <i class="bi bi-pencil"></i>
+            </button>
           </td>
         </tr>
         <?php endforeach; ?>
@@ -61,7 +64,7 @@ $csrf = $csrf ?? ($_SESSION['csrf'] ?? '');
 =========================== -->
 <div class="modal fade" id="officeModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-md modal-dialog-scrollable">
-    <div class="modal-content" style="background:#0f1833; color:#e5e7eb;">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="bi bi-buildings me-2"></i>Nueva Oficina</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -101,3 +104,139 @@ $csrf = $csrf ?? ($_SESSION['csrf'] ?? '');
     </div>
   </div>
 </div>
+
+<!-- ===========================
+     MODAL: DETALLE OFICINA
+=========================== -->
+<div class="modal fade" id="showOfficeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-eye me-2"></i>Detalle de Oficina</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="showOfficeContent">
+        <div class="text-center p-4">
+          <i class="bi bi-info-circle text-muted" style="font-size: 3rem;"></i>
+          <p class="mt-2">Seleccione una oficina para ver los detalles</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===========================
+     MODAL: EDITAR OFICINA
+=========================== -->
+<div class="modal fade" id="editOfficeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Editar Oficina</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="editOfficeContent">
+        <div class="text-center p-4">
+          <i class="bi bi-info-circle text-muted" style="font-size: 3rem;"></i>
+          <p class="mt-2">Seleccione una oficina para editar</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript para cargar contenido dinámicamente -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const BASE = "<?= $base ?>";
+  
+  // Manejar el modal de detalle
+  const showModalEl = document.getElementById('showOfficeModal');
+  if (showModalEl) {
+    showModalEl.addEventListener('show.bs.modal', function(event) {
+      const button = event.relatedTarget;
+      const id = button.getAttribute('data-id');
+      const content = document.getElementById('showOfficeContent');
+      
+      content.innerHTML = '<div class="text-center p-4"><i class="bi bi-arrow-repeat text-muted" style="font-size: 2rem; animation: spin 1s linear infinite;"></i></div>';
+      
+      fetch(`${BASE}/?controller=office&action=show&id=${id}&partial=1`)
+        .then(response => response.text())
+        .then(html => {
+          content.innerHTML = html;
+        })
+        .catch(error => {
+          content.innerHTML = '<div class="alert alert-danger">Error al cargar los datos</div>';
+        });
+    });
+  }
+  
+  // Manejar el modal de edición
+  const editModalEl = document.getElementById('editOfficeModal');
+  if (editModalEl) {
+    editModalEl.addEventListener('show.bs.modal', function(event) {
+      const button = event.relatedTarget;
+      const id = button.getAttribute('data-id');
+      const content = document.getElementById('editOfficeContent');
+      
+      content.innerHTML = '<div class="text-center p-4"><i class="bi bi-arrow-repeat text-muted" style="font-size: 2rem; animation: spin 1s linear infinite;"></i></div>';
+      
+      fetch(`${BASE}/?controller=office&action=edit&id=${id}&partial=1`)
+        .then(response => response.text())
+        .then(html => {
+          content.innerHTML = html;
+          
+          // Agregar funcionalidad de submit al formulario
+          const form = content.querySelector('form');
+          if (form) {
+            form.addEventListener('submit', function(e) {
+              e.preventDefault();
+              
+              const formData = new FormData(form);
+              const formDataObj = {};
+              for (let [key, value] of formData.entries()) {
+                formDataObj[key] = value;
+              }
+              
+              fetch(form.getAttribute('action'), {
+                method: 'POST',
+                body: new URLSearchParams(formDataObj),
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                }
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.ok) {
+                  // Cerrar modal y recargar tabla
+                  const modal = bootstrap.Modal.getInstance(editModalEl);
+                  modal.hide();
+                  
+                  // Mostrar mensaje de éxito
+                  alert('Oficina actualizada correctamente');
+                  
+                  // Recargar la página para reflejar cambios
+                  location.reload();
+                } else {
+                  alert('Error: ' + (data.error || 'No se pudo actualizar la oficina'));
+                }
+              })
+              .catch(error => {
+                alert('Error de red: ' + error.message);
+              });
+            });
+          }
+        })
+        .catch(error => {
+          content.innerHTML = '<div class="alert alert-danger">Error al cargar los datos</div>';
+        });
+    });
+  }
+});
+</script>

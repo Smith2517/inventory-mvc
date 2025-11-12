@@ -55,13 +55,13 @@ echo '<script>window.__APP_BASE__ = ' . json_encode($base) . ';</script>';
               <?php if ($row['estado_2'] === 'BUENO'): ?>
                 <span class="badge bg-success">BUENO</span>
               <?php elseif ($row['estado_2'] === 'MALO'): ?>
-                <span class="badge bg-warning">MALO</span>
+                <span class="badge bg-danger">MALO</span>
               <?php elseif ($row['estado_2'] === 'REGULAR'): ?>
-                <span class="badge bg-primary">REGULAR</span>
+                <span class="badge bg-info text-dark">REGULAR</span>
               <?php elseif ($row['estado_2'] === 'BAJA'): ?>
-                <span class="badge bg-danger">BAJA</span>
+                <span class="badge bg-secondary">BAJA</span>
               <?php elseif ($row['estado_2'] === 'NUEVO'): ?>
-                <span class="badge badge-warning">NUEVO</span>
+                <span class="badge bg-warning text-dark">NUEVO</span>
               <?php endif; ?>
             </td>
             <td class="actions">
@@ -108,7 +108,7 @@ echo '<script>window.__APP_BASE__ = ' . json_encode($base) . ';</script>';
 =========================== -->
 <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content" style="background:#0f1833; color:#e5e7eb;">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Nuevo Producto/Equipo</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -291,7 +291,7 @@ echo '<script>window.__APP_BASE__ = ' . json_encode($base) . ';</script>';
 =========================== -->
 <div class="modal fade" id="discountModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content" style="background:#0f1833; color:#e5e7eb;">
+    <div class="modal-content">
       <form method="post" action="<?= $base ?>/?controller=inventory&action=discount">
         <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
         <input type="hidden" name="inventario_id" id="d-inventario-id">
@@ -337,7 +337,7 @@ echo '<script>window.__APP_BASE__ = ' . json_encode($base) . ';</script>';
 =========================== -->
 <div class="modal fade" id="labelModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content" style="background:#0f1833; color:#e5e7eb;">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="bi bi-upc-scan me-2"></i>Etiqueta del Ítem</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -433,13 +433,13 @@ echo '<script>window.__APP_BASE__ = ' . json_encode($base) . ';</script>';
 
 <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-xl">
-    <div class="modal-content " style="background:#0f1833; color:#e5e7eb;">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="bi bi-eye me-2"></i>Detalle de Ítem</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body p-0">
-        <iframe id="detailFrame" src="about:blank" style="width:100%; height:40vh; border:0; "></iframe>
+        <iframe id="detailFrame" src="about:blank" style="width:100%; height:60vh; border:0; background:#fff; "></iframe>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
