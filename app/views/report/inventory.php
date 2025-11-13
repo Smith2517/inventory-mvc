@@ -1,47 +1,84 @@
 <?php
 /**
- * Reporte imprimible de inventario (Guardar como PDF desde el navegador)
+ * Reporte de inventario dentro del layout del sistema
  */
 ?>
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>Reporte de Inventario</title>
-  <style>
-    @media print { .no-print { display:none; } }
-    body { font-family: Arial, sans-serif; font-size: 12px; margin: 16px; }
-    h2 { margin: 0 0 8px 0; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
-    th { background: #f4f4f4; }
-  </style>
-</head>
-<body>
-  <div class="no-print" style="margin-bottom:10px;">
-    <button onclick="window.print()">Imprimir / Guardar PDF</button>
+
+<div class="report-container">
+  <div class="report-header d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="mb-1">Reporte de Inventario</h2>
+      <p class="text-muted mb-0">Generado: <?= date('Y-m-d H:i') ?></p>
+    </div>
+    <button onclick="window.print()" class="btn btn-primary no-print">
+      <i class="bi bi-printer me-1"></i> Imprimir / Guardar PDF
+    </button>
   </div>
-  <h2>Reporte de Inventario</h2>
-  <p>Generado: <?= date('Y-m-d H:i') ?></p>
-  <table>
-    <thead>
-      <tr>
-        <th>#</th><th>Código</th><th>Nombre</th><th>Cant.</th><th>Estado</th><th>Oficina ID</th><th>Estante</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($items as $i => $row): ?>
-      <tr>
-        <td><?= $i+1 ?></td>
-        <td><?= htmlspecialchars($row['codigo']) ?></td>
-        <td><?= htmlspecialchars($row['nombre']) ?></td>
-        <td><?= (int)$row['cantidad'] ?></td>
-        <td><?= htmlspecialchars($row['estado']) ?></td>
-        <td><?= (int)($row['oficina_id'] ?? 0) ?></td>
-        <td><?= htmlspecialchars($row['estante'] ?? '-') ?></td>
-      </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
-</body>
-</html>
+
+  <?php if (!empty($q)): ?>
+    <div class="alert alert-info mb-4">
+      <i class="bi bi-search me-1"></i> Búsqueda: <strong><?= htmlspecialchars($q) ?></strong>
+    </div>
+  <?php endif; ?>
+
+  <div class="table-responsive card shadow-sm">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Cant.</th>
+          <th>Estado</th>
+          <th>Oficina</th>
+          <th>Estante</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($items as $i => $row): ?>
+        <tr>
+          <td><?= $i+1 ?></td>
+          <td><?= htmlspecialchars($row['codigo']) ?></td>
+          <td><?= htmlspecialchars($row['nombre']) ?></td>
+          <td><?= (int)$row['cantidad'] ?></td>
+          <td>
+            <span class="badge <?= $row['cantidad'] > 0 ? 'bg-success' : 'bg-danger' ?>">
+              <?= htmlspecialchars($row['estado']) ?>
+            </span>
+          </td>
+          <td><?= htmlspecialchars($row['oficina'] ?? '-') ?></td>
+          <td><?= htmlspecialchars($row['estante'] ?? '-') ?></td>
+        </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+
+  <?php if (empty($items)): ?>
+    <div class="alert alert-info text-center mt-4">
+      <i class="bi bi-info-circle me-2"></i> No se encontraron registros
+    </div>
+  <?php endif; ?>
+</div>
+
+<style>
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    .report-container {
+      margin: 0;
+      padding: 20px;
+    }
+    .table {
+      font-size: 11px;
+    }
+    .table th,
+    .table td {
+      padding: 4px !important;
+    }
+    .badge {
+      font-size: 10px;
+    }
+  }
+</style>

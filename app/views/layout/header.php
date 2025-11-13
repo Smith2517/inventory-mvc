@@ -66,8 +66,8 @@ $isLogged = !empty($_SESSION['user']);
         <li><a href="<?= $base ?>/?controller=cargo&action=index"><i class="bi bi-card-checklist"></i> Cargos</a></li>
         <li><a href="<?= $base ?>/?controller=office&action=index"><i class="bi bi-buildings"></i> Oficinas</a></li>
         <li class="menu-title">Reportes</li>
-        <li><a target="_blank" href="<?= $base ?>/?controller=report&action=inventory"><i class="bi bi-file-earmark-spreadsheet"></i> Inventario</a></li>
-        <li><a target="_blank" href="<?= $base ?>/?controller=report&action=movements"><i class="bi bi-clock-history"></i> Movimientos</a></li>
+        <li><a href="<?= $base ?>/?controller=report&action=inventory"><i class="bi bi-file-earmark-spreadsheet"></i> Inventario</a></li>
+        <li><a href="<?= $base ?>/?controller=report&action=movements"><i class="bi bi-clock-history"></i> Movimientos</a></li>
       </ul>
       <div class="sidebar-footer">
         <div class="user">

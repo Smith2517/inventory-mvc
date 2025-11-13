@@ -9,7 +9,7 @@ class ReportController extends Controller {
     $inv = new Inventory();
     $q = trim($_GET['q'] ?? '');
     $items = $inv->paginate($q, 1000, 0);
-    $this->renderRaw('report/inventory', ['items' => $items, 'q' => $q]);
+    $this->render('report/inventory', ['items' => $items, 'q' => $q]);
   }
 
   public function movements() {
@@ -18,6 +18,6 @@ class ReportController extends Controller {
     $to   = $_GET['to']   ?? date('Y-m-d 23:59:59');
     $mov = new Movement();
     $rows = $mov->betweenDates($from, $to);
-    $this->renderRaw('report/movements', ['rows' => $rows, 'from' => $from, 'to' => $to]);
+    $this->render('report/movements', ['rows' => $rows, 'from' => $from, 'to' => $to]);
   }
 }
