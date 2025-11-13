@@ -9,12 +9,25 @@ class Inventory
     $this->db = Database::getInstance()->pdo();
   }
 
+  public function all()
+  {
+    $sql = 'SELECT i.*, o.nombre AS oficina
+            FROM inventario i
+            LEFT JOIN oficinas o ON i.oficina_id = o.id
+            ORDER BY i.nombre, i.codigo';
+    $st = $this->db->prepare($sql);
+    $st->execute();
+    return $st->fetchAll();
+  }
+
   public function paginate($q = '', $limit = 50, $offset = 0)
   {
     $limit  = max(1, (int)$limit);
     $offset = max(0, (int)$offset);
 
-    $sql = 'SELECT i.*, o.nombre AS oficina
+    $sql = 'SELECT i.id, i.codigo, i.nombre, i.descripcion, i.cantidad, 
+                   i.oficina_id, i.estado, i.estado_2, i.serie, i.estante, i.created_at, i.updated_at,
+                   o.nombre AS oficina
             FROM inventario i
             LEFT JOIN oficinas o ON i.oficina_id = o.id';
     $params = [];
@@ -46,7 +59,7 @@ class Inventory
   public function find($id)
   {
     $st = $this->db->prepare('SELECT i.id, i.codigo, i.nombre, i.descripcion,
-          i.cantidad, o.nombre AS nameOficina, i.estado, i.estante, i.estado_2, i.serie
+          i.cantidad, i.oficina_id, o.nombre AS nameOficina, i.estado, i.estante, i.estado_2, i.serie
           FROM inventario i 
           INNER JOIN oficinas o ON i.oficina_id=o.id WHERE i.id = ?');
     $st->execute([$id]);
@@ -84,6 +97,46 @@ class Inventory
     $estado = ($cantidad > 0) ? 'DISPONIBLE' : 'AGOTADO';
     $st = $this->db->prepare('UPDATE inventario SET cantidad = ?, estado = ?, updated_at = NOW() WHERE id = ?');
     $st->execute([(int)$cantidad, $estado, (int)$id]);
+  }
+  
+  public function update($id, $data)
+  {
+    $cantidad = (int)($data['cantidad'] ?? 0);
+    $estado = ($cantidad > 0) ? 'DISPONIBLE' : 'AGOTADO';
+    
+    $sql = 'UPDATE inventario 
+            SET nombre = :nombre, 
+                serie = :serie, 
+                descripcion = :descripcion, 
+                cantidad = :cantidad, 
+                oficina_id = :oficina_id, 
+                estado = :estado, 
+                estado_2 = :estado_2, 
+                estante = :estante, 
+                updated_at = NOW()
+            WHERE id = :id';
+    
+    $st = $this->db->prepare($sql);
+    $result = $st->execute([
+      ':nombre' => $data['nombre'],
+      ':serie' => $data['serie'],
+      ':descripcion' => $data['descripcion'],
+      ':cantidad' => $cantidad,
+      ':oficina_id' => ($data['oficina_id'] !== null && $data['oficina_id'] != 0) ? (int)$data['oficina_id'] : null,
+      ':estado' => $estado,
+      ':estado_2' => $data['estado_2'],
+      ':estante' => $data['estante'],
+      ':id' => (int)$id
+    ]);
+    
+    // Si la actualización falla, devolver false
+    if ($st->errorCode() !== '00000') {
+        $errorInfo = $st->errorInfo();
+        error_log("Error en actualización de inventario: " . print_r($errorInfo, true));
+        return false;
+    }
+    
+    return $result;
   }
 
   /** Devuelve p.ej. SOP-INF-0001, SOP-INF-0002, ... para el prefijo dado */

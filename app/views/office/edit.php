@@ -30,9 +30,7 @@ if (!$isPartial): ?>
         <div class="mb-3">
           <label class="form-label">Descripción</label>
           <textarea name="descripcion" class="form-control" rows="3" 
-                    placeholder="Ej: Área de TI, almacén secundario, etc.">
-            <?= htmlspecialchars($oficina['descripcion'] ?? '') ?>
-          </textarea>
+                    placeholder="Ej: Área de TI, almacén secundario, etc."><?= htmlspecialchars($oficina['descripcion'] ?? '') ?></textarea>
         </div>
         
         <div class="mb-3">
@@ -51,6 +49,15 @@ if (!$isPartial): ?>
           <a href="<?= $base ?>/?controller=office&action=index" class="btn btn-secondary">
             <i class="bi bi-x me-1"></i> Cancelar
           </a>
+        </div>
+        <?php else: ?>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save2 me-1"></i> Actualizar
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x me-1"></i> Cerrar
+          </button>
         </div>
         <?php endif; ?>
       </form>

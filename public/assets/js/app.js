@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
             labelFrame.contentWindow.print();
           } catch (e) {
             console.error("Error al imprimir:", e);
-            alert("No se pudo imprimir la etiqueta. Intente abrir en nueva pestaña.");
+            showNotification('error', 'No se pudo imprimir la etiqueta. Intente abrir en nueva pestaña.');
           }
         }
       });
@@ -214,31 +214,63 @@ document.addEventListener("DOMContentLoaded", () => {
           $(this).DataTable().destroy();
         }
         
-        // Initialize with responsive settings
-        $(this).DataTable({
-          pageLength: 10,
-          lengthMenu: [5, 10, 25, 50, 100],
-          order: [],
-          responsive: true,
-          language: {
-            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
-          },
-          dom: "Bfrtip",
-          buttons: [
-            { extend: "excel", className: "btn btn-success btn-sm" },
-            { extend: "pdf", className: "btn btn-danger btn-sm" },
-            { extend: "print", className: "btn btn-secondary btn-sm" },
-          ],
-          // Adjust column widths to prevent breaking
-          columnDefs: [
-            { targets: '_all', className: 'responsive-nowrap' }
-          ]
-        });
+        // Different initialization for different tables
+        if (this.id === 'cargoTable') {
+          // For cargo table: don't include export buttons to keep it simple
+          $(this).DataTable({
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50, 100],
+            order: [],
+            responsive: {
+              details: {
+                type: 'column',
+                target: 'tr'
+              }
+            },
+            language: {
+              url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+            },
+            dom: "frtip", // Only search, table, info, pagination (no export buttons)
+            // Adjust column widths to prevent breaking
+            columnDefs: [
+              { targets: '_all', className: 'responsive-nowrap' }
+            ]
+          });
+        } else {
+          // For other tables (like inventory): include export buttons
+          $(this).DataTable({
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50, 100],
+            order: [],
+            responsive: {
+              details: {
+                type: 'column',
+                target: 'tr'
+              }
+            },
+            language: {
+              url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+            },
+            dom: "Bfrtip",
+            buttons: [
+              { extend: "excel", className: "btn btn-success btn-sm" },
+              { extend: "pdf", className: "btn btn-danger btn-sm" },
+              { extend: "print", className: "btn btn-secondary btn-sm" },
+            ],
+            // Adjust column widths to prevent breaking
+            columnDefs: [
+              { targets: '_all', className: 'responsive-nowrap' }
+            ]
+          });
+        }
       });
     };
 
     // Initialize DataTables after a short delay to ensure DOM is ready
     setTimeout(initializeDataTables, 100);
+    
+    // Make initializeDataTables globally available for manual reinitialization
+    window.initializeDataTables = initializeDataTables;
   }
 
   // ====== Improved Responsive Table Handling ======
@@ -323,4 +355,54 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
   
+  // ====== Sistema de notificaciones SweetAlert2 ======
+  window.showNotification = function(type, message, title = '') {
+    let icon = '';
+    let toast = true;
+    
+    switch(type) {
+      case 'success':
+        icon = 'success';
+        break;
+      case 'error':
+        icon = 'error';
+        break;
+      case 'warning':
+        icon = 'warning';
+        break;
+      case 'info':
+        icon = 'info';
+        break;
+      default:
+        icon = 'info';
+    }
+    
+    // Asegurar que el mensaje tenga al menos 3 segundos de visibilidad
+    Swal.fire({
+      title: title,
+      text: message,
+      icon: icon,
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,  // 3 segundos como solicitado
+      timerProgressBar: true,
+      showCloseButton: true, // Permitir cierre manual
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    });
+  };
+
+  // Mostrar notificaciones flash de inmediato
+  // (fuera del DOMContentLoaded para asegurar que se muestren aunque la página ya esté cargada)
+  if (typeof window.__FLASH_SUCCESS__ !== 'undefined' && window.__FLASH_SUCCESS__) {
+    showNotification('success', window.__FLASH_SUCCESS__);
+  }
+  
+  if (typeof window.__FLASH_ERROR__ !== 'undefined' && window.__FLASH_ERROR__) {
+    showNotification('error', window.__FLASH_ERROR__);
+  }
+
 });

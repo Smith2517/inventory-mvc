@@ -317,6 +317,412 @@ body {
   text-align: center;
 }
 
+/* Column-specific classes for better responsive control */
+.col-fit {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.col-code {
+  min-width: 120px;
+}
+
+.col-name {
+  min-width: 150px;
+}
+
+.col-qty {
+  width: 80px;
+  text-align: center;
+}
+
+.col-series {
+  min-width: 120px;
+}
+
+.col-description {
+  min-width: 180px;
+}
+
+.col-status {
+  width: 100px;
+}
+
+.col-office {
+  min-width: 120px;
+}
+
+.col-shelf {
+  width: 100px;
+}
+
+.col-condition {
+  width: 100px;
+}
+
+.col-actions {
+  width: 150px;
+  text-align: center;
+}
+
+/* Responsive table adjustments for inventory table */
+.col-fit {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.col-code {
+  min-width: 75px;
+  max-width: 100px;
+}
+
+.col-name {
+  min-width: 120px;
+}
+
+.col-qty {
+  width: 80px;
+  text-align: center;
+}
+
+.col-status {
+  width: 100px;
+}
+
+.col-condition {
+  width: 100px;
+}
+
+.col-office {
+  width: 120px;
+}
+
+.col-actions {
+  width: 130px;
+  text-align: center;
+}
+
+@media (max-width: 1299.98px) {
+  .col-office {
+    display: none !important;
+  }
+  
+  .table {
+    font-size: 0.75rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.25rem 0.2rem;
+  }
+  
+  .col-actions {
+    width: 110px;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .col-condition {
+    display: none !important;
+  }
+  
+  .table {
+    font-size: 0.75rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.25rem 0.2rem;
+  }
+  
+  .col-actions {
+    width: 100px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .col-status {
+    display: none !important;
+  }
+  
+  .col-name {
+    min-width: 100px;
+  }
+  
+  .table {
+    font-size: 0.7rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.2rem 0.15rem;
+  }
+  
+  .col-actions {
+    width: 95px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .table-responsive {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+  
+  /* Mobile optimization for table */
+  .table {
+    font-size: 0.65rem;
+    min-width: 550px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.15rem 0.1rem;
+  }
+  
+  .col-actions {
+    width: 90px;
+  }
+  
+  .btn-group-sm > .btn,
+  .btn-sm {
+    padding: 0.1rem 0.2rem;
+    font-size: 0.7rem;
+  }
+  
+  .col-name {
+    min-width: 80px;
+  }
+}
+
+/* For extra small screens */
+@media (max-width: 575.98px) {
+  .table {
+    font-size: 0.6rem;
+    min-width: 500px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.1rem;
+  }
+  
+  .col-actions {
+    width: 85px;
+  }
+  
+  .card-body.p-2 {
+    padding: 0.5rem !important;
+  }
+  
+  .col-code {
+    min-width: 60px;
+    max-width: 80px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .col-status {
+    display: none !important;
+  }
+  
+  .table {
+    font-size: 0.8rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.35rem 0.25rem;
+  }
+  
+  .col-actions {
+    width: 100px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .table-responsive {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+  
+  /* Mobile optimization for table */
+  .table {
+    font-size: 0.75rem;
+    min-width: 500px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.3rem;
+  }
+  
+  .col-actions {
+    width: 110px;
+  }
+  
+  .btn-group-sm > .btn,
+  .btn-sm {
+    padding: 0.2rem 0.3rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* For extra small screens */
+@media (max-width: 575.98px) {
+  .table {
+    font-size: 0.7rem;
+    min-width: 450px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.2rem;
+  }
+  
+  .col-actions {
+    width: 100px;
+  }
+  
+  .card-body.p-3 {
+    padding: 1rem !important;
+  }
+}
+
+/* Fix for DataTables responsive behavior */
+.datatable {
+  width: 100% !important;
+}
+
+/* Ensure buttons remain visible in all screen sizes */
+.d-flex.justify-content-between.align-items-center {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.d-flex.justify-content-between.align-items-center .btn {
+  flex-shrink: 0;
+}
+
+/* Column classes for cargo table */
+.col-item {
+  min-width: 150px;
+}
+
+.col-qty {
+  width: 80px;
+  text-align: center;
+}
+
+.col-user {
+  min-width: 120px;
+}
+
+.col-office {
+  min-width: 120px;
+}
+
+.col-date {
+  width: 100px;
+}
+
+.col-status {
+  width: 100px;
+}
+
+.col-reason {
+  min-width: 150px;
+}
+
+/* Responsive adjustments for cargo table */
+@media (max-width: 1199.98px) {
+  .col-reason {
+    display: none;
+  }
+  
+  .table {
+    font-size: 0.85rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.4rem 0.3rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .col-date {
+    display: none;
+  }
+  
+  .table {
+    font-size: 0.8rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.35rem 0.25rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .table-responsive {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+  
+  .col-office {
+    display: none;
+  }
+  
+  /* Mobile optimization for table */
+  .table {
+    font-size: 0.75rem;
+    min-width: 500px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.3rem;
+  }
+  
+  .btn-group-sm > .btn,
+  .btn-sm {
+    padding: 0.2rem 0.3rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* For extra small screens */
+@media (max-width: 575.98px) {
+  .col-user {
+    display: none;
+  }
+  
+  .table {
+    font-size: 0.7rem;
+    min-width: 450px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.2rem;
+  }
+  
+  .card-body.p-3 {
+    padding: 1rem !important;
+  }
+}
+
 /* Badges */
 .badge { 
   display: inline-block;

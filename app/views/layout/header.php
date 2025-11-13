@@ -20,6 +20,33 @@ $isLogged = !empty($_SESSION['user']);
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
   <link href="<?= $base ?>/assets/css/styles.css" rel="stylesheet">
+  <script>
+    // Inicializar variables de notificación
+    window.__FLASH_SUCCESS__ = null;
+    window.__FLASH_ERROR__ = null;
+    
+    // Pasar mensajes flash de PHP a JavaScript
+    <?php if (isset($_SESSION['success']) && !empty($_SESSION['success'])): ?>
+      window.__FLASH_SUCCESS__ = "<?= addslashes(htmlspecialchars($_SESSION['success'])) ?>";
+      <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['error']) && !empty($_SESSION['error'])): ?>
+      window.__FLASH_ERROR__ = "<?= addslashes(htmlspecialchars($_SESSION['error'])) ?>";
+      <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['flash_success']) && !empty($_SESSION['flash_success'])): ?>
+      window.__FLASH_SUCCESS__ = "<?= addslashes(htmlspecialchars($_SESSION['flash_success'])) ?>";
+      <?php unset($_SESSION['flash_success']); ?>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['flash_errors']) && is_array($_SESSION['flash_errors'])): ?>
+      <?php $error_msg = is_string($_SESSION['flash_errors']) ? $_SESSION['flash_errors'] : (isset($_SESSION['flash_errors']['general']) ? $_SESSION['flash_errors']['general'] : 'Error de validación'); ?>
+      window.__FLASH_ERROR__ = "<?= addslashes(htmlspecialchars($error_msg)) ?>";
+      <?php unset($_SESSION['flash_errors']); ?>
+    <?php endif; ?>
+  </script>
 </head>
 
 <body class="<?= $isLogged ? 'has-sidebar' : 'login-bg' ?>">
@@ -36,7 +63,7 @@ $isLogged = !empty($_SESSION['user']);
       </div>
       <ul class="sidebar-menu">
         <li><a href="<?= $base ?>/?controller=inventory&action=index"><i class="bi bi-grid"></i> Inventario</a></li>
-
+        <li><a href="<?= $base ?>/?controller=cargo&action=index"><i class="bi bi-card-checklist"></i> Cargos</a></li>
         <li><a href="<?= $base ?>/?controller=office&action=index"><i class="bi bi-buildings"></i> Oficinas</a></li>
         <li class="menu-title">Reportes</li>
         <li><a target="_blank" href="<?= $base ?>/?controller=report&action=inventory"><i class="bi bi-file-earmark-spreadsheet"></i> Inventario</a></li>

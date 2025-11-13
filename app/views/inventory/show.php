@@ -72,7 +72,9 @@ $isPartial = !empty($_GET['partial']); // si viene desde el modal/iframe
           <div class="row mt-3">
             <div class="col-12">
               <p class="mb-1"><strong>Descripción:</strong></p>
-              <p class="text-muted"><?= htmlspecialchars($item['descripcion']) ?></p>
+              <div class="alert alert-light border">
+                <p class="mb-0 text-dark"><?= htmlspecialchars($item['descripcion']) ?></p>
+              </div>
             </div>
           </div>
           <?php endif; ?>

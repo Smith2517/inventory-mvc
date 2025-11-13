@@ -69,6 +69,7 @@ class InventoryController extends Controller
         ]);
       }
 
+      $_SESSION['flash_success'] = 'Ítem agregado exitosamente.';
       $this->redirect('/');
       return;
     }
@@ -207,6 +208,78 @@ public function nextCode()
   $code = $inv->nextCodeForPrefix($prefix);
 
   echo json_encode(['ok' => true, 'code' => $code, 'prefix' => $prefix]);
+}
+
+public function update()
+{
+  $this->requireLogin();
+  if ($_SERVER['REQUEST_METHOD'] !== 'POST') { 
+    http_response_code(405); 
+    echo 'Método no permitido'; 
+    return; 
+  }
+  $this->checkCsrf();
+  
+  $id = (int)($_POST['id'] ?? 0);
+  $nombre = trim($_POST['nombre'] ?? '');
+  $serie = trim($_POST['serie'] ?? '');
+  $descripcion = trim($_POST['descripcion'] ?? '');
+  $cantidad = (int)($_POST['cantidad'] ?? 0);
+  $oficinaId = isset($_POST['oficina_id']) ? (int)$_POST['oficina_id'] : 0;
+  // Asegurarnos de que oficinaId sea válido, NULL si es 0
+  if ($oficinaId <= 0) {
+    $oficinaId = null;
+  }
+  $estado_2 = trim($_POST['estado_2'] ?? '');
+  // Validar que estado_2 sea uno de los valores válidos
+  $validEstados = ['BUENO', 'MALO', 'REGULAR', 'BAJA', 'NUEVO'];
+  if (!in_array($estado_2, $validEstados)) {
+    $estado_2 = 'BUENO'; // Valor por defecto
+  }
+  $estante = trim($_POST['estante'] ?? '');
+
+  // Validación de campos requeridos
+  if (empty($nombre) || empty($serie)) {
+    $this->redirect('/?controller=inventory&action=index');
+    return;
+  }
+
+  $inv = new Inventory();
+  $item = $inv->find($id);
+  if (!$item) { 
+    // En lugar de mostrar un mensaje de error, redirigir con un mensaje
+    $_SESSION['error'] = 'El ítem que intenta actualizar no existe.';
+    $this->redirect('/?controller=inventory&action=index');
+    return; 
+  }
+
+  // Actualizar el ítem (excepto el código)
+  $updateData = [
+    'nombre' => $nombre,
+    'serie' => $serie,
+    'descripcion' => $descripcion,
+    'cantidad' => $cantidad,
+    'oficina_id' => $oficinaId,
+    'estado_2' => $estado_2,
+    'estante' => $estante
+  ];
+  
+  // Para depuración
+  error_log("Intentando actualizar ítem ID: $id con datos: " . print_r($updateData, true));
+  
+  $success = $inv->update($id, $updateData);
+
+  if ($success) {
+    // Verificar que se haya actualizado realmente
+    $updatedItem = $inv->find($id);
+    error_log("Ítem actualizado: " . print_r($updatedItem, true));
+    $_SESSION['flash_success'] = 'Ítem actualizado correctamente.';
+  } else {
+    error_log("Falló la actualización del ítem ID: $id");
+    $_SESSION['flash_errors'] = ['general' => 'No se pudo actualizar el ítem.'];
+  }
+  
+  $this->redirect('/?controller=inventory&action=index');
 }
 
 

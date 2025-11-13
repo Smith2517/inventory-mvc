@@ -51,6 +51,12 @@ $csrf = $csrf ?? ($_SESSION['csrf'] ?? '');
                title="Editar">
               <i class="bi bi-pencil"></i>
             </button>
+            <button class="btn btn-sm btn-outline-danger delete-office-btn"
+               data-id="<?= $row['id'] ?>"
+               data-nombre="<?= htmlspecialchars($row['nombre']) ?>"
+               title="Eliminar">
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
         <?php endforeach; ?>
@@ -144,9 +150,7 @@ $csrf = $csrf ?? ($_SESSION['csrf'] ?? '');
           <p class="mt-2">Seleccione una oficina para editar</p>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-      </div>
+      <!-- Sin modal-footer: los botones vienen desde edit.php -->
     </div>
   </div>
 </div>
@@ -192,45 +196,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(html => {
           content.innerHTML = html;
           
-          // Agregar funcionalidad de submit al formulario
+          // Agregar funcionalidad de submit al formulario (dentro del modal)
           const form = content.querySelector('form');
           if (form) {
-            form.addEventListener('submit', function(e) {
-              e.preventDefault();
-              
-              const formData = new FormData(form);
-              const formDataObj = {};
-              for (let [key, value] of formData.entries()) {
-                formDataObj[key] = value;
-              }
-              
-              fetch(form.getAttribute('action'), {
-                method: 'POST',
-                body: new URLSearchParams(formDataObj),
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded',
-                }
-              })
-              .then(response => response.json())
-              .then(data => {
-                if (data.ok) {
-                  // Cerrar modal y recargar tabla
-                  const modal = bootstrap.Modal.getInstance(editModalEl);
-                  modal.hide();
-                  
-                  // Mostrar mensaje de éxito
-                  alert('Oficina actualizada correctamente');
-                  
-                  // Recargar la página para reflejar cambios
-                  location.reload();
-                } else {
-                  alert('Error: ' + (data.error || 'No se pudo actualizar la oficina'));
-                }
-              })
-              .catch(error => {
-                alert('Error de red: ' + error.message);
-              });
-            });
+            // Dejar que el formulario se envíe normalmente como en el módulo de inventario
+            // El controlador manejará el mensaje flash y la redirección
           }
         })
         .catch(error => {
@@ -239,4 +209,78 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Manejar el evento de clic para eliminar oficina
+document.addEventListener('click', function(e) {
+  const deleteBtn = e.target.closest('.delete-office-btn');
+  if (deleteBtn) {
+    const id = deleteBtn.getAttribute('data-id');
+    const nombre = deleteBtn.getAttribute('data-nombre');
+    
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `¿Deseas eliminar la oficina "${nombre}"? Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const BASE = "<?= $base ?>";
+        fetch(`${BASE}/?controller=office&action=delete&id=${id}`, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `csrf=${encodeURIComponent(window.__APP_BASE__CSRF || '<?= $csrf ?>')}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            // Recargar con un parámetro para mostrar notificación flash
+            window.location.href = `${BASE}/?controller=office&action=index&deleted=1`;
+          } else {
+            showNotification('error', data.error || 'No se pudo eliminar la oficina');
+          }
+        })
+        .catch(error => {
+          showNotification('error', 'Error de red: ' + error.message);
+        });
+      }
+    });
+  }
+});
+
+// Función para re-inicializar DataTable si es necesario en navegación
+window.initializeOfficeTable = function() {
+  if (window.jQuery && typeof jQuery.fn.DataTable === "function") {
+    jQuery(".datatable").each(function() {
+      if ($.fn.DataTable.isDataTable(this)) {
+        $(this).DataTable().destroy();
+      }
+      
+      $(this).DataTable({
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+        order: [],
+        responsive: true,
+        language: {
+          url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+        },
+        dom: "Bfrtip",
+        buttons: [
+          { extend: "excel", className: "btn btn-success btn-sm" },
+          { extend: "pdf", className: "btn btn-danger btn-sm" },
+          { extend: "print", className: "btn btn-secondary btn-sm" },
+        ],
+        columnDefs: [
+          { targets: '_all', className: 'responsive-nowrap' }
+        ]
+      });
+    });
+  }
+};
 </script>
